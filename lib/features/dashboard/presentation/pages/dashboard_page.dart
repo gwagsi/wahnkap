@@ -28,10 +28,7 @@ class DashboardPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
                   children: [
-                    const CircleAvatar(
-                      radius: 24,
-                      child: Icon(Icons.person),
-                    ),
+                    const CircleAvatar(radius: 24, child: Icon(Icons.person)),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
@@ -43,9 +40,8 @@ class DashboardPage extends StatelessWidget {
                           ),
                           Text(
                             'Ready to grow your portfolio?',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Colors.grey[600],
-                                ),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: Colors.grey[600]),
                           ),
                         ],
                       ),
@@ -55,16 +51,16 @@ class DashboardPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            
+
             // Portfolio Overview
             Text(
               'Portfolio Overview',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            
+
             Row(
               children: [
                 Expanded(
@@ -89,7 +85,7 @@ class DashboardPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            
+
             Row(
               children: [
                 Expanded(
@@ -114,16 +110,16 @@ class DashboardPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            
+
             // Quick Actions
             Text(
               'Quick Actions',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            
+
             Row(
               children: [
                 Expanded(
@@ -152,16 +148,16 @@ class DashboardPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            
+
             // Recent Activity
             Text(
               'Recent Activity',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            
+
             Card(
               child: ListView.separated(
                 shrinkWrap: true,
@@ -174,7 +170,7 @@ class DashboardPage extends StatelessWidget {
                     ('Bot Trade - BTC/USD', '+\$45.30', '5 hours ago'),
                     ('Investment Return', '+\$125.00', '1 day ago'),
                   ];
-                  
+
                   final activity = activities[index];
                   return ListTile(
                     leading: const CircleAvatar(
@@ -186,7 +182,9 @@ class DashboardPage extends StatelessWidget {
                     trailing: Text(
                       activity.$2,
                       style: TextStyle(
-                        color: activity.$2.startsWith('+') ? Colors.green : Colors.red,
+                        color: activity.$2.startsWith('+')
+                            ? Colors.green
+                            : Colors.red,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -218,9 +216,9 @@ class DashboardPage extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey[600],
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                 ),
                 Icon(icon, color: color, size: 20),
               ],
@@ -229,9 +227,9 @@ class DashboardPage extends StatelessWidget {
             Text(
               value,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: color,
-                  ),
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
             ),
           ],
         ),
@@ -262,9 +260,9 @@ class DashboardPage extends StatelessWidget {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ),
