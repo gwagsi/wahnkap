@@ -27,8 +27,8 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
-    final button = isOutlined 
+
+    final button = isOutlined
         ? OutlinedButton(
             onPressed: isLoading ? null : onPressed,
             child: _buildChild(theme),
@@ -42,11 +42,7 @@ class CustomButton extends StatelessWidget {
             child: _buildChild(theme),
           );
 
-    return SizedBox(
-      width: width,
-      height: height,
-      child: button,
-    );
+    return SizedBox(width: width, height: height, child: button);
   }
 
   Widget _buildChild(ThemeData theme) {
@@ -66,11 +62,7 @@ class CustomButton extends StatelessWidget {
     if (icon != null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon),
-          const SizedBox(width: 8),
-          Text(text),
-        ],
+        children: [Icon(icon), const SizedBox(width: 8), Text(text)],
       );
     }
 

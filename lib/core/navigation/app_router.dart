@@ -15,10 +15,7 @@ class AppRouter {
   static final GoRouter _router = GoRouter(
     initialLocation: welcome,
     routes: [
-      GoRoute(
-        path: welcome,
-        builder: (context, state) => const WelcomePage(),
-      ),
+      GoRoute(path: welcome, builder: (context, state) => const WelcomePage()),
       ShellRoute(
         builder: (context, state, child) => AppShell(child: child),
         routes: [

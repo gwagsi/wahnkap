@@ -5,10 +5,10 @@ import 'core/navigation/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize dependency injection
   await configureDependencies();
-  
+
   runApp(const WahnkapApp());
 }
 

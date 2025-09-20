@@ -28,17 +28,14 @@ class ErrorDisplay extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               message,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
             if (onRetry != null) ...[
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: onRetry,
-                child: const Text('Retry'),
-              ),
+              ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
             ],
           ],
         ),

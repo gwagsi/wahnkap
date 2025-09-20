@@ -5,12 +5,7 @@ class LoadingSpinner extends StatelessWidget {
   final double size;
   final String? message;
 
-  const LoadingSpinner({
-    super.key,
-    this.color,
-    this.size = 32.0,
-    this.message,
-  });
+  const LoadingSpinner({super.key, this.color, this.size = 32.0, this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +26,9 @@ class LoadingSpinner extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               message!,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey[600],
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
             ),
           ],
         ],

@@ -13,9 +13,7 @@ class ApiClient {
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         sendTimeout: const Duration(seconds: 30),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
       ),
     );
 
@@ -27,10 +25,7 @@ class ApiClient {
   void _addInterceptors() {
     _dio.interceptors.addAll([
       if (const bool.fromEnvironment('dart.vm.product') == false)
-        LogInterceptor(
-          requestBody: true,
-          responseBody: true,
-        ),
+        LogInterceptor(requestBody: true, responseBody: true),
       InterceptorsWrapper(
         onRequest: (options, handler) {
           // Add auth token if available

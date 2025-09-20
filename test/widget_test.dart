@@ -16,6 +16,9 @@ void main() {
 
     // Verify that our app loads the welcome screen.
     expect(find.text('Wahnkap'), findsOneWidget);
-    expect(find.text('Your Gateway to Smart Trading & Investment'), findsOneWidget);
+    expect(
+      find.text('Your Gateway to Smart Trading & Investment'),
+      findsOneWidget,
+    );
   });
 }

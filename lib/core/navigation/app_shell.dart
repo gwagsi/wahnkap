@@ -4,10 +4,7 @@ import 'package:go_router/go_router.dart';
 class AppShell extends StatefulWidget {
   final Widget child;
 
-  const AppShell({
-    super.key,
-    required this.child,
-  });
+  const AppShell({super.key, required this.child});
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -53,22 +50,13 @@ class _AppShellState extends State<AppShell> {
             icon: Icon(Icons.dashboard),
             label: 'Dashboard',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.payment),
-            label: 'Payments',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.smart_toy),
-            label: 'Bots',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Payments'),
+          BottomNavigationBarItem(icon: Icon(Icons.smart_toy), label: 'Bots'),
           BottomNavigationBarItem(
             icon: Icon(Icons.trending_up),
             label: 'Investments',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
