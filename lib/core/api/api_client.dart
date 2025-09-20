@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import '../config/app_config.dart';
 import 'api_endpoints.dart';
 
 @singleton
@@ -27,11 +26,11 @@ class ApiClient {
 
   void _addInterceptors() {
     _dio.interceptors.addAll([
-      LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-        logPrint: (object) => print(object),
-      ),
+      if (const bool.fromEnvironment('dart.vm.product') == false)
+        LogInterceptor(
+          requestBody: true,
+          responseBody: true,
+        ),
       InterceptorsWrapper(
         onRequest: (options, handler) {
           // Add auth token if available
