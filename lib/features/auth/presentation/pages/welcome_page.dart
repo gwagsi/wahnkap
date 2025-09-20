@@ -1,18 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/di/injection.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
+import '../widgets/account_selection_dialog.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+    return BlocProvider(
+      create: (context) => getIt<AuthBloc>(),
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthSessionsReceived) {
+            // Show account selection dialog
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => AccountSelectionDialog(
+                sessions: state.sessions,
+                onAccountSelected: (token) {
+                  context.read<AuthBloc>().add(AuthUserSelected(token: token));
+                },
+              ),
+            );
+          } else if (state is AuthAuthenticated) {
+            // Navigate to dashboard
+            context.go('/dashboard');
+          } else if (state is AuthError) {
+            // Show error
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
               const Spacer(),
               // App Logo
               Container(

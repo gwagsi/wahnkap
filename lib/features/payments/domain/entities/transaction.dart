@@ -1,18 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-enum TransactionType {
-  deposit,
-  withdrawal,
-  transfer,
-}
+enum TransactionType { deposit, withdrawal, transfer }
 
-enum TransactionStatus {
-  pending,
-  processing,
-  completed,
-  failed,
-  cancelled,
-}
+enum TransactionStatus { pending, processing, completed, failed, cancelled }
 
 class Transaction extends Equatable {
   final String id;
@@ -41,15 +31,15 @@ class Transaction extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        userId,
-        type,
-        amount,
-        currency,
-        status,
-        description,
-        createdAt,
-        completedAt,
-        referenceId,
-      ];
+    id,
+    userId,
+    type,
+    amount,
+    currency,
+    status,
+    description,
+    createdAt,
+    completedAt,
+    referenceId,
+  ];
 }

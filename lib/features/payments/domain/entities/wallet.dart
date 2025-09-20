@@ -16,11 +16,5 @@ class Wallet extends Equatable {
   });
 
   @override
-  List<Object> get props => [
-        id,
-        userId,
-        balance,
-        currency,
-        lastUpdated,
-      ];
+  List<Object> get props => [id, userId, balance, currency, lastUpdated];
 }
