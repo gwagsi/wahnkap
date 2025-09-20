@@ -1,10 +1,9 @@
-import 'package:flutter_deriv_api/flutter_deriv_api.dart';
 import 'package:injectable/injectable.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/errors/exception.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/entities/oauth_session.dart';
-import '../models/auth_user_model.dart';
+import '../../domain/entities/deriv_account.dart';
 import 'auth_remote_data_source.dart';
 
 @Injectable(as: IAuthRemoteDataSource)
@@ -69,31 +68,40 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
   @override
   Future<AuthUser> authorizeUser(String token) async {
     try {
-      // Initialize Deriv API
-      APIInitializer().initialize();
-
-      final api = Injector.getInjector()!.get<BaseAPI>();
-
-      // Connect to Deriv WebSocket
-      await api.connect(
-        ConnectionInformation(
-          appId: _derivAppId,
-          brand: 'deriv',
-          endpoint: 'frontend.binaryws.com',
-          language: 'EN',
+      // TODO: Replace with actual Deriv API integration
+      // For now, return a mock user for development purposes
+      await Future.delayed(const Duration(seconds: 2)); // Simulate API call
+      
+      return AuthUser(
+        userId: '12345',
+        email: 'user@example.com',
+        fullName: 'John Doe',
+        country: 'US',
+        preferredLanguage: 'EN',
+        scopes: ['read', 'trade'],
+        accounts: [
+          DerivAccount(
+            loginId: 'CR123456',
+            accountType: 'trading',
+            currency: 'USD',
+            balance: 1000.0,
+            isVirtual: false,
+            isDisabled: false,
+            landingCompanyName: 'svg',
+            createdAt: DateTime.now(),
+          ),
+        ],
+        currentAccount: DerivAccount(
+          loginId: 'CR123456',
+          accountType: 'trading',
+          currency: 'USD',
+          balance: 1000.0,
+          isVirtual: false,
+          isDisabled: false,
+          landingCompanyName: 'svg',
+          createdAt: DateTime.now(),
         ),
       );
-
-      // Authorize user with the token
-      final authorizeRequest = AuthorizeRequest(authorize: token);
-      final response = await api.call(request: authorizeRequest);
-
-      if (response is AuthorizeResponse) {
-        // Convert response to our domain model
-        return AuthUserModel.fromApiResponse(response.toJson());
-      }
-
-      throw const ServerException(message: 'Invalid authorize response');
     } catch (e) {
       throw ServerException(message: 'Failed to authorize user: $e');
     }

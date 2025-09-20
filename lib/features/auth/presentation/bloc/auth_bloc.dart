@@ -28,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<AuthLoginStarted>(_onAuthLoginStarted);
     on<AuthLoginCompleted>(_onAuthLoginCompleted);
+    on<AuthOAuthCallbackReceived>(_onAuthOAuthCallbackReceived);
     on<AuthUserSelected>(_onAuthUserSelected);
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
   }
@@ -64,6 +65,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthSessionsReceived(sessions: event.sessions));
+  }
+
+  Future<void> _onAuthOAuthCallbackReceived(
+    AuthOAuthCallbackReceived event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    final result = await _handleOAuthCallback(
+      HandleOAuthCallbackParams(redirectUrl: event.redirectUrl),
+    );
+
+    result.fold(
+      (failure) => emit(AuthError(message: failure.message)),
+      (sessions) => emit(AuthSessionsReceived(sessions: sessions)),
+    );
   }
 
   Future<void> _onAuthUserSelected(

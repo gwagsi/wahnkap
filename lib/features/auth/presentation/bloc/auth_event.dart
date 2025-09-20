@@ -30,4 +30,13 @@ class AuthUserSelected extends AuthEvent {
   List<Object> get props => [token];
 }
 
+class AuthOAuthCallbackReceived extends AuthEvent {
+  final String redirectUrl;
+
+  const AuthOAuthCallbackReceived({required this.redirectUrl});
+
+  @override
+  List<Object> get props => [redirectUrl];
+}
+
 class AuthLogoutRequested extends AuthEvent {}

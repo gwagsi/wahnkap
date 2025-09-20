@@ -32,6 +32,8 @@ import 'package:wahnkap/features/auth/domain/usecases/handle_oauth_callback.dart
 import 'package:wahnkap/features/auth/domain/usecases/logout.dart' as _i79;
 import 'package:wahnkap/features/auth/domain/usecases/start_oauth_flow.dart'
     as _i938;
+import 'package:wahnkap/features/auth/presentation/bloc/auth_bloc.dart'
+    as _i1032;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -65,6 +67,12 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i700.AuthorizeUser(gh<_i496.IAuthRepository>()));
     gh.factory<_i463.HandleOAuthCallback>(
         () => _i463.HandleOAuthCallback(gh<_i496.IAuthRepository>()));
+    gh.factory<_i1032.AuthBloc>(() => _i1032.AuthBloc(
+          startOAuthFlow: gh<_i938.StartOAuthFlow>(),
+          handleOAuthCallback: gh<_i463.HandleOAuthCallback>(),
+          authorizeUser: gh<_i700.AuthorizeUser>(),
+          logout: gh<_i79.Logout>(),
+        ));
     return this;
   }
 }
