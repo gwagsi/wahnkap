@@ -3,7 +3,7 @@ import '../../domain/entities/oauth_session.dart';
 
 class AccountSelectionDialog extends StatelessWidget {
   final List<OAuthSession> sessions;
-  final Function(String token) onAccountSelected;
+  final Function(String token, List<OAuthSession> allSessions) onAccountSelected;
 
   const AccountSelectionDialog({
     super.key,
@@ -48,7 +48,7 @@ class AccountSelectionDialog extends StatelessWidget {
     // Get account type for better display
     final isDemo = session.account.startsWith('VRTC');
     final accountType = isDemo ? 'Demo' : 'Real';
-    
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
@@ -70,15 +70,12 @@ class AccountSelectionDialog extends StatelessWidget {
         ),
         subtitle: Text(
           '$accountType Account • ${session.currency}',
-          style: TextStyle(
-            color: Colors.grey[600],
-            fontSize: 12,
-          ),
+          style: TextStyle(color: Colors.grey[600], fontSize: 12),
         ),
         trailing: ElevatedButton(
           onPressed: () {
             Navigator.of(context).pop();
-            onAccountSelected(session.token);
+            onAccountSelected(session.token, sessions);
           },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

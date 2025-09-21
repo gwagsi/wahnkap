@@ -23,11 +23,15 @@ class AuthLoginCompleted extends AuthEvent {
 
 class AuthUserSelected extends AuthEvent {
   final String token;
+  final List<OAuthSession> allSessions;
 
-  const AuthUserSelected({required this.token});
+  const AuthUserSelected({
+    required this.token,
+    required this.allSessions,
+  });
 
   @override
-  List<Object> get props => [token];
+  List<Object> get props => [token, allSessions];
 }
 
 class AuthOAuthCallbackReceived extends AuthEvent {

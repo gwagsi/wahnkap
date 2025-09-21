@@ -76,6 +76,7 @@ extension GetItInjectableX on _i174.GetIt {
           handleOAuthCallback: gh<_i463.HandleOAuthCallback>(),
           authorizeUser: gh<_i700.AuthorizeUser>(),
           logout: gh<_i79.Logout>(),
+          repository: gh<_i496.IAuthRepository>(),
         ));
     return this;
   }

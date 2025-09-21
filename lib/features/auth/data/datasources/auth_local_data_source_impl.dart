@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/errors/exception.dart';
 import '../../domain/entities/auth_user.dart';
+import '../../domain/entities/oauth_session.dart';
 import '../models/auth_user_model.dart';
 import 'auth_local_data_source.dart';
 
@@ -12,6 +13,8 @@ class AuthLocalDataSourceImpl implements IAuthLocalDataSource {
 
   static const String _userKey = 'CACHED_USER';
   static const String _tokenKey = 'AUTH_TOKEN';
+  static const String _sessionsKey = 'OAUTH_SESSIONS';
+  static const String _primaryTokenKey = 'PRIMARY_TOKEN';
 
   AuthLocalDataSourceImpl(this.sharedPreferences);
 
@@ -67,6 +70,8 @@ class AuthLocalDataSourceImpl implements IAuthLocalDataSource {
       await Future.wait([
         sharedPreferences.remove(_userKey),
         sharedPreferences.remove(_tokenKey),
+        sharedPreferences.remove(_sessionsKey),
+        sharedPreferences.remove(_primaryTokenKey),
       ]);
     } catch (e) {
       throw CacheException(message: 'Failed to clear user session: $e');
@@ -80,6 +85,54 @@ class AuthLocalDataSourceImpl implements IAuthLocalDataSource {
           sharedPreferences.containsKey(_tokenKey);
     } catch (e) {
       return false;
+    }
+  }
+
+  @override
+  Future<void> storeOAuthSessions(List<OAuthSession> sessions, String primaryToken) async {
+    try {
+      final sessionsJson = sessions.map((session) => {
+        'account': session.account,
+        'token': session.token,
+        'currency': session.currency,
+      }).toList();
+
+      await Future.wait([
+        sharedPreferences.setString(_sessionsKey, json.encode(sessionsJson)),
+        sharedPreferences.setString(_primaryTokenKey, primaryToken),
+      ]);
+    } catch (e) {
+      throw CacheException(message: 'Failed to store OAuth sessions: $e');
+    }
+  }
+
+  @override
+  Future<List<OAuthSession>> getStoredSessions() async {
+    try {
+      final sessionsJson = sharedPreferences.getString(_sessionsKey);
+      if (sessionsJson != null) {
+        final sessionsList = json.decode(sessionsJson) as List<dynamic>;
+        return sessionsList.map((sessionMap) {
+          final map = sessionMap as Map<String, dynamic>;
+          return OAuthSession(
+            account: map['account'] as String,
+            token: map['token'] as String,
+            currency: map['currency'] as String,
+          );
+        }).toList();
+      }
+      return [];
+    } catch (e) {
+      throw CacheException(message: 'Failed to get stored sessions: $e');
+    }
+  }
+
+  @override
+  Future<String?> getPrimaryToken() async {
+    try {
+      return sharedPreferences.getString(_primaryTokenKey);
+    } catch (e) {
+      return null;
     }
   }
 }

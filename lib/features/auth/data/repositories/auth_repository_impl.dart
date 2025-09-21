@@ -123,6 +123,18 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
+  Future<Either<Failure, void>> storeOAuthSessions(List<OAuthSession> sessions, String primaryToken) async {
+    try {
+      await localDataSource.storeOAuthSessions(sessions, primaryToken);
+      return const Right(null);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } catch (e) {
+      return Left(CacheFailure(message: 'Unexpected error: $e'));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> clearUserSession() async {
     try {
       await localDataSource.clearUserSession();

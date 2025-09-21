@@ -30,6 +30,9 @@ abstract class IAuthRepository {
   /// Store user session locally
   Future<Either<Failure, void>> storeUserSession(AuthUser user, String token);
 
+  /// Store OAuth sessions and set primary account
+  Future<Either<Failure, void>> storeOAuthSessions(List<OAuthSession> sessions, String primaryToken);
+
   /// Clear stored user session
   Future<Either<Failure, void>> clearUserSession();
 }
