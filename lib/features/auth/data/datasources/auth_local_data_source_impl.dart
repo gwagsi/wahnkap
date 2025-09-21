@@ -89,13 +89,20 @@ class AuthLocalDataSourceImpl implements IAuthLocalDataSource {
   }
 
   @override
-  Future<void> storeOAuthSessions(List<OAuthSession> sessions, String primaryToken) async {
+  Future<void> storeOAuthSessions(
+    List<OAuthSession> sessions,
+    String primaryToken,
+  ) async {
     try {
-      final sessionsJson = sessions.map((session) => {
-        'account': session.account,
-        'token': session.token,
-        'currency': session.currency,
-      }).toList();
+      final sessionsJson = sessions
+          .map(
+            (session) => {
+              'account': session.account,
+              'token': session.token,
+              'currency': session.currency,
+            },
+          )
+          .toList();
 
       await Future.wait([
         sharedPreferences.setString(_sessionsKey, json.encode(sessionsJson)),

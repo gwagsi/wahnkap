@@ -25,10 +25,7 @@ class AuthUserSelected extends AuthEvent {
   final String token;
   final List<OAuthSession> allSessions;
 
-  const AuthUserSelected({
-    required this.token,
-    required this.allSessions,
-  });
+  const AuthUserSelected({required this.token, required this.allSessions});
 
   @override
   List<Object> get props => [token, allSessions];

@@ -24,10 +24,9 @@ class WelcomePage extends StatelessWidget {
               builder: (context) => AccountSelectionDialog(
                 sessions: state.sessions,
                 onAccountSelected: (token, allSessions) {
-                  context.read<AuthBloc>().add(AuthUserSelected(
-                    token: token,
-                    allSessions: allSessions,
-                  ));
+                  context.read<AuthBloc>().add(
+                    AuthUserSelected(token: token, allSessions: allSessions),
+                  );
                 },
               ),
             );

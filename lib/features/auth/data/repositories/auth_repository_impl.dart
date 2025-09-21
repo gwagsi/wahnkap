@@ -123,7 +123,10 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> storeOAuthSessions(List<OAuthSession> sessions, String primaryToken) async {
+  Future<Either<Failure, void>> storeOAuthSessions(
+    List<OAuthSession> sessions,
+    String primaryToken,
+  ) async {
     try {
       await localDataSource.storeOAuthSessions(sessions, primaryToken);
       return const Right(null);

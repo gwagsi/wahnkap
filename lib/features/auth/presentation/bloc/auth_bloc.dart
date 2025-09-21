@@ -49,11 +49,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // Check if user is already authenticated
       final isAuthenticated = await _repository.isAuthenticated();
       if (isAuthenticated) {
-        debugPrint('✅ AuthBloc: User is authenticated, getting current user...');
+        debugPrint(
+          '✅ AuthBloc: User is authenticated, getting current user...',
+        );
         final result = await _repository.getCurrentUser();
         result.fold(
           (failure) {
-            debugPrint('❌ AuthBloc: Failed to get current user - ${failure.message}');
+            debugPrint(
+              '❌ AuthBloc: Failed to get current user - ${failure.message}',
+            );
             emit(AuthUnauthenticated());
           },
           (user) {
@@ -138,22 +142,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthUserSelected event,
     Emitter<AuthState> emit,
   ) async {
-    debugPrint('👤 AuthBloc: User selected token: ${event.token.substring(0, 10)}...');
+    debugPrint(
+      '👤 AuthBloc: User selected token: ${event.token.substring(0, 10)}...',
+    );
     emit(AuthLoading());
 
     try {
       // First, store all OAuth sessions with the selected token as primary
-      debugPrint('💾 AuthBloc: Storing ${event.allSessions.length} OAuth sessions...');
-      final storeResult = await _repository.storeOAuthSessions(event.allSessions, event.token);
-      
+      debugPrint(
+        '💾 AuthBloc: Storing ${event.allSessions.length} OAuth sessions...',
+      );
+      final storeResult = await _repository.storeOAuthSessions(
+        event.allSessions,
+        event.token,
+      );
+
       await storeResult.fold(
         (failure) async {
-          debugPrint('❌ AuthBloc: Failed to store sessions - ${failure.message}');
-          emit(AuthError(message: 'Failed to store sessions: ${failure.message}'));
+          debugPrint(
+            '❌ AuthBloc: Failed to store sessions - ${failure.message}',
+          );
+          emit(
+            AuthError(message: 'Failed to store sessions: ${failure.message}'),
+          );
         },
         (_) async {
           debugPrint('✅ AuthBloc: Sessions stored, now authorizing user...');
-          
+
           // Then authorize the user with the selected token
           final authResult = await _authorizeUser(
             AuthorizeUserParams(token: event.token),
@@ -161,11 +176,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
           authResult.fold(
             (failure) {
-              debugPrint('❌ AuthBloc: User authorization failed - ${failure.message}');
+              debugPrint(
+                '❌ AuthBloc: User authorization failed - ${failure.message}',
+              );
               emit(AuthError(message: failure.message));
             },
             (user) {
-              debugPrint('✅ AuthBloc: User authorized successfully - ${user.email}');
+              debugPrint(
+                '✅ AuthBloc: User authorized successfully - ${user.email}',
+              );
               emit(AuthAuthenticated(user: user));
             },
           );

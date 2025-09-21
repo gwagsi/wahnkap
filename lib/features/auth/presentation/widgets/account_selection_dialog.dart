@@ -3,7 +3,8 @@ import '../../domain/entities/oauth_session.dart';
 
 class AccountSelectionDialog extends StatelessWidget {
   final List<OAuthSession> sessions;
-  final Function(String token, List<OAuthSession> allSessions) onAccountSelected;
+  final Function(String token, List<OAuthSession> allSessions)
+  onAccountSelected;
 
   const AccountSelectionDialog({
     super.key,

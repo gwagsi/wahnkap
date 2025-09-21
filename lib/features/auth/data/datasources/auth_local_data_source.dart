@@ -6,7 +6,10 @@ abstract class IAuthLocalDataSource {
   Future<void> storeUserSession(AuthUser user, String token);
 
   /// Store all OAuth sessions with primary account
-  Future<void> storeOAuthSessions(List<OAuthSession> sessions, String primaryToken);
+  Future<void> storeOAuthSessions(
+    List<OAuthSession> sessions,
+    String primaryToken,
+  );
 
   /// Get current stored user
   Future<AuthUser?> getCurrentUser();
