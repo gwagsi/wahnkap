@@ -5,6 +5,9 @@ abstract class IAuthRemoteDataSource {
   /// Start OAuth authentication flow
   Future<String> startOAuthFlow();
 
+  /// Start complete OAuth flow and wait for callback
+  Future<List<OAuthSession>> startCompleteOAuthFlow();
+
   /// Handle OAuth redirect and extract sessions
   Future<List<OAuthSession>> handleOAuthCallback(String redirectUrl);
 

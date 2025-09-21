@@ -13,6 +13,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:wahnkap/core/api/api_client.dart' as _i568;
 import 'package:wahnkap/core/di/register_module.dart' as _i626;
+import 'package:wahnkap/core/services/deep_link_service.dart' as _i809;
 import 'package:wahnkap/features/auth/data/datasources/auth_local_data_source.dart'
     as _i336;
 import 'package:wahnkap/features/auth/data/datasources/auth_local_data_source_impl.dart'
@@ -23,6 +24,7 @@ import 'package:wahnkap/features/auth/data/datasources/auth_remote_data_source_i
     as _i267;
 import 'package:wahnkap/features/auth/data/repositories/auth_repository_impl.dart'
     as _i669;
+import 'package:wahnkap/features/auth/data/services/oauth_service.dart' as _i57;
 import 'package:wahnkap/features/auth/domain/repositories/i_auth_repository.dart'
     as _i496;
 import 'package:wahnkap/features/auth/domain/usecases/authorize_user.dart'
@@ -51,9 +53,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
+    gh.factory<_i809.DeepLinkService>(() => _i809.DeepLinkService());
+    gh.factory<_i57.OAuthService>(() => _i57.OAuthService());
     gh.singleton<_i568.ApiClient>(() => _i568.ApiClient());
     gh.factory<_i954.IAuthRemoteDataSource>(
-        () => _i267.AuthRemoteDataSourceImpl());
+        () => _i267.AuthRemoteDataSourceImpl(gh<_i57.OAuthService>()));
     gh.factory<_i336.IAuthLocalDataSource>(
         () => _i1007.AuthLocalDataSourceImpl(gh<_i460.SharedPreferences>()));
     gh.factory<_i496.IAuthRepository>(() => _i669.AuthRepositoryImpl(

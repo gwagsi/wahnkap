@@ -7,6 +7,9 @@ abstract class IAuthRepository {
   /// Start OAuth authentication flow
   Future<Either<Failure, String>> startOAuthFlow();
 
+  /// Start complete OAuth flow and wait for callback
+  Future<Either<Failure, List<OAuthSession>>> startCompleteOAuthFlow();
+
   /// Handle OAuth redirect and extract sessions
   Future<Either<Failure, List<OAuthSession>>> handleOAuthCallback(
     String redirectUrl,

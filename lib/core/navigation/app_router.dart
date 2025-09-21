@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../debug/debug_oauth_page.dart';
 import '../../features/auth/presentation/pages/welcome_page.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import 'app_shell.dart';
@@ -11,11 +12,16 @@ class AppRouter {
   static const String tradingBots = '/trading-bots';
   static const String investments = '/investments';
   static const String profile = '/profile';
+  static const String debugOAuth = '/debug-oauth';
 
   static final GoRouter _router = GoRouter(
     initialLocation: welcome,
     routes: [
       GoRoute(path: welcome, builder: (context, state) => const WelcomePage()),
+      GoRoute(
+        path: debugOAuth,
+        builder: (context, state) => const DebugOAuthPage(),
+      ),
       ShellRoute(
         builder: (context, state, child) => AppShell(child: child),
         routes: [

@@ -136,6 +136,16 @@ class WelcomePage extends StatelessWidget {
                       },
                       child: const Text('Learn More'),
                     ),
+                    const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: () {
+                        context.go('/debug-oauth');
+                      },
+                      child: const Text(
+                        'Debug OAuth',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
                   ],
                 ),
               ),

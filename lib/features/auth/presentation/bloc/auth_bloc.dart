@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -48,22 +49,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLoginStarted event,
     Emitter<AuthState> emit,
   ) async {
+    debugPrint('🔐 AuthBloc: Starting OAuth login...');
     emit(AuthLoginInProgress());
 
     final result = await _startOAuthFlow(NoParams());
 
-    result.fold((failure) => emit(AuthError(message: failure.message)), (
-      oauthUrl,
-    ) {
-      // The OAuth URL has been launched
-      // We'll wait for the callback through AuthLoginCompleted
-    });
+    result.fold(
+      (failure) {
+        debugPrint('❌ AuthBloc: OAuth flow failed - ${failure.message}');
+        emit(AuthError(message: failure.message));
+      },
+      (sessions) {
+        debugPrint(
+          '✅ AuthBloc: OAuth flow completed with ${sessions.length} sessions',
+        );
+        emit(AuthSessionsReceived(sessions: sessions));
+      },
+    );
   }
 
   Future<void> _onAuthLoginCompleted(
     AuthLoginCompleted event,
     Emitter<AuthState> emit,
   ) async {
+    debugPrint(
+      '✅ AuthBloc: Login completed with ${event.sessions.length} sessions',
+    );
     emit(AuthSessionsReceived(sessions: event.sessions));
   }
 
@@ -71,6 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthOAuthCallbackReceived event,
     Emitter<AuthState> emit,
   ) async {
+    debugPrint('📨 AuthBloc: OAuth callback received - ${event.redirectUrl}');
     emit(AuthLoading());
 
     final result = await _handleOAuthCallback(
@@ -78,8 +90,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     result.fold(
-      (failure) => emit(AuthError(message: failure.message)),
-      (sessions) => emit(AuthSessionsReceived(sessions: sessions)),
+      (failure) {
+        debugPrint('❌ AuthBloc: OAuth callback failed - ${failure.message}');
+        emit(AuthError(message: failure.message));
+      },
+      (sessions) {
+        debugPrint(
+          '✅ AuthBloc: OAuth callback succeeded with ${sessions.length} sessions',
+        );
+        emit(AuthSessionsReceived(sessions: sessions));
+      },
     );
   }
 

@@ -45,5 +45,16 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>wahnkap.oauth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wahnkap</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

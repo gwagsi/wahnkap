@@ -59,6 +59,9 @@ dependencies:
   # URL Launcher for OAuth
   url_launcher: ^6.2.6
   
+  # Deep linking for OAuth callback
+  app_links: ^6.3.2
+  
   # WebView for OAuth flow  
   webview_flutter: ^4.8.0
   

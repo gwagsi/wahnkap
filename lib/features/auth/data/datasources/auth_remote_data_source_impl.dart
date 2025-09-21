@@ -1,38 +1,42 @@
 import 'package:injectable/injectable.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/errors/exception.dart';
 import '../../domain/entities/auth_user.dart';
 import '../../domain/entities/oauth_session.dart';
 import '../../domain/entities/deriv_account.dart';
 import 'auth_remote_data_source.dart';
+import '../services/oauth_service.dart';
 
 @Injectable(as: IAuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
-  // TODO: Replace with your actual Deriv App ID from https://api.deriv.com/dashboard
-  static const String _derivAppId = '1089'; // Demo app ID - replace with yours
-  static const String _oauthBaseUrl =
-      'https://oauth.deriv.com/oauth2/authorize';
+  final OAuthService _oauthService;
+
+  const AuthRemoteDataSourceImpl(this._oauthService);
 
   @override
   Future<String> startOAuthFlow() async {
     try {
-      final oauthUrl = '$_oauthBaseUrl?app_id=$_derivAppId';
-
-      final uri = Uri.parse(oauthUrl);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-        return oauthUrl;
-      } else {
-        throw const ServerException(message: 'Could not launch OAuth URL');
-      }
+      final sessions = await _oauthService.startOAuthFlow();
+      // For backward compatibility, return a success message
+      return 'OAuth flow completed with ${sessions.length} sessions';
     } catch (e) {
       throw ServerException(message: 'Failed to start OAuth flow: $e');
     }
   }
 
   @override
+  Future<List<OAuthSession>> startCompleteOAuthFlow() async {
+    try {
+      return await _oauthService.startOAuthFlow();
+    } catch (e) {
+      throw ServerException(message: 'Failed to complete OAuth flow: $e');
+    }
+  }
+
+  @override
   Future<List<OAuthSession>> handleOAuthCallback(String redirectUrl) async {
     try {
+      // The OAuth service handles the callback automatically during startOAuthFlow
+      // This method can be used for manual callback handling if needed
       final uri = Uri.parse(redirectUrl);
       final queryParams = uri.queryParameters;
 
@@ -71,7 +75,7 @@ class AuthRemoteDataSourceImpl implements IAuthRemoteDataSource {
       // TODO: Replace with actual Deriv API integration
       // For now, return a mock user for development purposes
       await Future.delayed(const Duration(seconds: 2)); // Simulate API call
-      
+
       return AuthUser(
         userId: '12345',
         email: 'user@example.com',

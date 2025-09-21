@@ -31,6 +31,18 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
+  Future<Either<Failure, List<OAuthSession>>> startCompleteOAuthFlow() async {
+    try {
+      final sessions = await remoteDataSource.startCompleteOAuthFlow();
+      return Right(sessions);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return Left(ServerFailure(message: 'Unexpected error: $e'));
+    }
+  }
+
+  @override
   Future<Either<Failure, List<OAuthSession>>> handleOAuthCallback(
     String redirectUrl,
   ) async {
